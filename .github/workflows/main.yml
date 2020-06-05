@@ -20,8 +20,6 @@ jobs:
           flutter upgrade
           flutter config --enable-web
           flutter build web 
-      - name: Build Hugo
-        uses: lowply/build-hugo@v0.68.3
       - name: Deploy to Firebase
         uses: lowply/deploy-firebase@v0.0.2
         env:
