@@ -7,6 +7,52 @@ on:
     branches: [ master ]
 
 jobs:
+  codestyle:
+    runs-on: ubuntu-latest
+  
+    steps:
+      - uses: actions/checkout@v1
+      - name: Install Flutter
+        uses: subosito/flutter-action@v1
+        with:
+          channel: 'stable'
+        
+      - name: Starting linting
+        run: |
+          flutter pub get
+          flutter analyze
+  
+  tests:
+    needs: [codestyle]
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v1
+    - uses: subosito/flutter-action@v1
+      with:
+        channel: 'stable'
+    - run: |
+        flutter pub get
+        flutter test
+  
+  docker:
+   needs: [codestyle, tests]
+   runs-on: ubuntu-latest
+   steps:
+     - uses: actions/checkout@v1
+     
+     - name: Docker version
+       run: docker -v
+     
+     - name: Docker build
+       run: |
+         docker build -t ${{ secrets.DOCKER_LOGIN }}/flapp:ver_$GITHUB_RUN_NUMBER .
+         docker images
+         
+     - name: Upload to docker hub
+       run: |
+         docker login --username=${{ secrets.DOCKER_LOGIN }} --password=${{ secrets.DOCKER_PASSWORD }}
+         docker push ${{ secrets.DOCKER_LOGIN }}/flapp:ver_$GITHUB_RUN_NUMBER
   deploy:
     runs-on: ubuntu-latest
     steps:
