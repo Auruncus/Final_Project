@@ -19,11 +19,11 @@ jobs:
           flutter channel master
           flutter upgrade
           flutter config --enable-web
-          flutter build web
-      - name: Firebase GitHub Action
-        uses: pizzafox/firebase-action@1.0.7
+          flutter build web 
+      - name: Build Hugo
+        uses: lowply/build-hugo@v0.68.3
+      - name: Deploy to Firebase
+        uses: lowply/deploy-firebase@v0.0.2
         env:
-          PROJECT_ID: "flappy-8f0a3"
           FIREBASE_TOKEN: ${{ secrets.FIREBASE_TOKEN }}
-        with:
-          args: deploy  
+          FIREBASE_PROJECT: flappy-8f0a3
