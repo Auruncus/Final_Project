@@ -21,3 +21,10 @@ jobs:
           flutter upgrade
           flutter config --enable-web
           flutter build web
+      - name: Firebase GitHub Action
+      - uses: pizzafox/firebase-action@1.0.7
+        env:
+          PROJECT_ID: "flappy-8f0a3"
+          FIREBASE_TOKEN: ${{ secrets.FIREBASE_TOKEN }}
+        with:
+          args: deploy  
