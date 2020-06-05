@@ -55,6 +55,7 @@ jobs:
          docker push ${{ secrets.DOCKER_LOGIN }}/flapp:ver_$GITHUB_RUN_NUMBER
   deploy:
     runs-on: ubuntu-latest
+    needs: [codestyle, tests, docker]
     steps:
       - uses: actions/checkout@v1
       - uses: subosito/flutter-action@v1
